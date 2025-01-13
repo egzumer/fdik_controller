@@ -129,35 +129,44 @@ void packetReceived(const vector<uint8_t> &data)
         if (propid == 0x03) {
             float val = *(float*)(&data[4]);
             props["pwrMax"] = to_string(val);
+            printf_s("%.2f\n", val);
         }
         else if (propid == 0x04) {
             float val = *(float*)(&data[4]);
             props["pwrMin"] = to_string(val);
+            printf_s("%.2f\n", val);
         }
         else if (propid == 0x05) {
             float val = *(float*)(&data[4]);
             props["pumpFlow"] = to_string(val);
+            printf_s("%.2f\n", val);
         }
         else if (propid == 0x0b) {
             props["error"] = to_string(prop);
+            printf_s("%d\n", prop);
         }
         else if (propid == 0x0c) {
             props["state"] = to_string(prop);
+            printf_s("%d\n", prop);
         }
         else if (propid == 0x20) {
             float val = *(float*)(&data[4]);
             props["burnerTemp"] = to_string(val);
+            printf_s("%.2f\n", val);
         }
         else if (propid == 0x24) {
             float val = *(float*)(&data[4]);
             props["voltage"] = to_string(val);
+            printf_s("%.2f\n", val);
         }
         else if (propid == 0x66) {
             string modes[] = { "Normal", "Prime", "Fan" };
             props["mode"] = modes[data[4]];
+            printf_s("%d\n", prop);
         }
         else if (propid == 0x50) {
             uint8_t bf = data[4];
+            printf_s("%d\n", prop);
 
             props["compAct"] = toBin(&bf, len)
                 + ((bf & (1 << 0)) ? " glowPlug" : "")
@@ -179,6 +188,8 @@ void packetReceived(const vector<uint8_t> &data)
             }
             else
                 props[buf] = to_string(prop);
+
+            printf_s("%d\n", prop);
         }
 
         refresh(window);

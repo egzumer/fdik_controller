@@ -33,13 +33,25 @@ a0 00 00 01 ff 74   resp, no error
 
 Registers (read by C24 controller):
 0x01 - config flags (cb6b06ff or cb6b06bf),		read on startup
-0x03 - max power,								read on startup
-0x04 - min power,								read on startup
-0x05 - (0.022), pump flow ml/cycle				read on startup
+0x03 - max power, float							read on startup
+0x04 - min power, float							read on startup
+0x05 - pump flow ml/cycle, float				read on startup
 0x0b - error, uint8_t, 0xff - no error
+	0 - control board failure
+	1 - ignition failure
+	2 - flameout
+	3 - supply voltage
+	6 - intake overtemperature
+	7 - oil pump failure
+	8 - fan failure
+	9 - glow plug short
+	10 - overheating
+	11 - temp sensor failure
+	12 - glow plug open
 0x0c - state, uint32_t
-	1 - power on
+	1 - standby
 	2 - fan test
+	3 - first ignition failed
 	5 - glowplug test
 	6 - preignition
 	7 - fuel priming
@@ -48,17 +60,23 @@ Registers (read by C24 controller):
 	11 - heating up
 	13 - stabilized
 	17 - cooldown
-	28 - ventilation mode
+	20 - fan ramp down
+	23 - preparing for fuel pump start
+	24 - fuel pump start attempt
+	25 - fuel pump start failed, cooldown
+	26 - fuel pump start failed, standby
+	28 - ventilating
+	30 - failed ignition shutdown
 	31 - shutdown
 0x20 - burner temperature, float
 0x23 - ???
 0x24 - supply voltage, float
 0x50 - components activity, uint8_t, 
-	0 - glow plug, 
-	1 - injector, 
-	2 - fan, 
-	3 - heating, 
-	5 - turned on
+	bit 0 - glow plug, 
+	bit 1 - injector, 
+	bit 2 - fan, 
+	bit 3 - heating, 
+	bit 5 - turned on
 0x66 - operation mode, uint8_t, 				read on startup
 	0 - normal, 
 	1 - prime, 
@@ -129,7 +147,7 @@ a5 03 00 05 01 eb 6b 06 3f c9 	pump auto
 
 
 a5 03 00 00 cc  save settings?
-a5 07 00 00 52  save settings?
+a5 07 00 00 52  reset
 
 -----------
 
